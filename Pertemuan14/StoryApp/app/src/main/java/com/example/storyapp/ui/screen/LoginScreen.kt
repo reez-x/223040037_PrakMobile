@@ -57,6 +57,30 @@ fun LoginScreen(viewModel: AuthViewModel, onSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+                isEmailError = false
+            },
+            label = { Text("Email") },
+            isError = isEmailError,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+
+        if(isEmailError){
+            Text(
+                text = "Email tidak boleh kosong",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.align(Alignment.Start)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        //////////////
+        OutlinedTextField(
             value = password,
             onValueChange = {
                 password = it

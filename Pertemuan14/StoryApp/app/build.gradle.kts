@@ -37,17 +37,38 @@ android {
 //            )
 //        }
 //    }
+//    buildTypes {
+//        debug {
+//            buildConfigField("String", "API_URL", "\"${dotenv["API_URL_DEBUG"] ?: "http://192.168.245.68/"}\"")
+//        }
+//        release {
+//            buildConfigField("String", "API_URL", "\"${dotenv["API_URL_RELEASE"] ?: "http://192.168.245.68/"}\"")
+//            // Konfigurasi release lainnya
+//            isMinifyEnabled = true
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//        }
+//    }
+
     buildTypes {
         debug {
-            buildConfigField("String", "API_URL", "\"${dotenv["API_URL_DEBUG"] ?: "http://192.168.245.68/"}\"")
+            val apiUrl = dotenv["API_URL_DEBUG"] ?: "http://192.168.245.68:3000/"
+            buildConfigField("String", "API_URL", "\"$apiUrl\"")
+
+            val apiKey = dotenv["API_KEY"] ?: "Bearer lol123"
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
         }
         release {
-            buildConfigField("String", "API_URL", "\"${dotenv["API_URL_RELEASE"] ?: "http://192.168.245.68/"}\"")
-            // Konfigurasi release lainnya
+            val apiUrl = dotenv["API_URL_RELEASE"] ?: "http://192.168.245.68:3000/"
+            buildConfigField("String", "API_URL", "\"$apiUrl\"")
+
+            val apiKey = dotenv["API_KEY"] ?: "Bearer lol123"
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
+
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -14,23 +14,24 @@ import javax.inject.Singleton
 class AuthRepository @Inject constructor(
     private val apiService: ApiService,
     private val userDao: UserDao
-){
-    suspend fun login(email: String, password: String): Flow<Result<UserEntity>> = flow{
+) {
+    suspend fun login(email: String, password: String): Flow<Result<UserEntity>> = flow {
         emit(Result.Loading)
         try {
             val response = apiService.login(LoginRequest(email, password))
-            if (response.error){
+
+            if (response.status != 200) {
                 emit(Result.Error(response.message))
             } else {
                 val user = UserEntity(
-                    userId = response.loginResult.userId,
-                    name = response.loginResult.name,
-                    token = response.loginResult.token
+                    userId = response.data.id,
+                    name = response.data.name,
+                    token = response.data.token
                 )
                 userDao.insertUser(user)
                 emit(Result.Success(user))
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             emit(Result.Error(e.message ?: "Terjadi kesalahan"))
         }
     }
